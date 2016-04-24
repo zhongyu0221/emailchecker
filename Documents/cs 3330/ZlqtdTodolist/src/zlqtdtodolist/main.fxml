@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="581.0" prefWidth="605.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="zlqtdtodolist.MainController">
+    <stylesheets>
+        <URL value="@main.css" />
+    </stylesheets>
+   <children>
+      <MenuBar prefHeight="29.0" prefWidth="605.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Button fx:id="save" layoutX="312.0" layoutY="527.0" mnemonicParsing="false" text="Save" />
+      <Button fx:id="clear" layoutX="375.0" layoutY="527.0" mnemonicParsing="false" text="Clear" />
+      <Label layoutX="64.0" layoutY="257.0" text="Name:" />
+      <Label layoutX="64.0" layoutY="295.0" text="Date:" />
+      <DatePicker fx:id="date" layoutX="131.0" layoutY="290.0" />
+      <TextField fx:id="name" layoutX="131.0" layoutY="252.0" />
+      <TextArea fx:id="details" layoutX="128.0" layoutY="336.0" prefHeight="132.0" prefWidth="446.0" />
+      <Label layoutX="59.0" layoutY="336.0" text="Details:" />
+      <ListView fx:id="list" layoutY="125.0" prefHeight="99.0" prefWidth="605.0" />
+      <Button fx:id="delete" layoutX="440.0" layoutY="527.0" mnemonicParsing="false" text="Delete" />
+      <Label layoutX="34.0" layoutY="53.0" prefHeight="44.0" prefWidth="167.0" text="To-do List">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
