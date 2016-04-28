@@ -6,6 +6,7 @@
 package todolist;
 
 import java.io.IOException;
+import static java.lang.System.exit;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -15,9 +16,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
@@ -28,13 +31,16 @@ import javafx.stage.Stage;
 public class Logcontroller implements Initializable {
 
     @FXML
-    private TextArea LogName;
+   private  TextField LogName;
     @FXML
-    private TextArea LogPass;
+    
+    private TextField LogPass;
     @FXML
     private Button Submit;
     @FXML
     private Label information;
+    @FXML
+    private Button Cancle;
 
     /**
      * Initializes the controller class.
@@ -58,10 +64,24 @@ public class Logcontroller implements Initializable {
             stage.setScene(scene);
             stage.show();
 
-        } else {
-            information.setText("Wrong passoword");
-            System.out.println("Wrong passoword");
+        } else 
+            displayErrorAlert("Wrong password"); 
+            
+            
         }
 
+    
+
+    @FXML
+    private void CencleAction(ActionEvent event) {
+      System.exit(0);
+    }
+    
+     private void displayErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Wrong passoword");
+        //alert.setHeaderText("Error!");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

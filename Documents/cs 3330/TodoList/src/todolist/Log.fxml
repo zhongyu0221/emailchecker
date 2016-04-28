@@ -9,12 +9,12 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="todolist.Logcontroller">
    <children>
-      <Label layoutX="30.0" layoutY="26.0" text="Log In:">
+      <Label layoutX="14.0" layoutY="14.0" text="Log In:">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <VBox layoutX="90.0" layoutY="97.0" prefHeight="106.0" prefWidth="151.0" spacing="40.0" AnchorPane.bottomAnchor="157.0">
+      <VBox layoutX="88.0" layoutY="145.0" prefHeight="137.0" prefWidth="184.0" spacing="40.0" AnchorPane.bottomAnchor="118.0">
          <children>
             <Label prefHeight="33.0" prefWidth="172.0" text="Username:">
                <font>
@@ -28,17 +28,33 @@
             </Label>
          </children>
       </VBox>
-      <VBox layoutX="304.0" layoutY="140.0" prefHeight="150.0" prefWidth="231.0" spacing="20.0">
+      <VBox layoutX="285.0" layoutY="137.0" prefHeight="127.0" prefWidth="231.0" spacing="20.0">
          <children>
-            <TextArea fx:id="LogName" prefHeight="34.0" prefWidth="231.0" />
-            <TextArea fx:id="LogPass" prefHeight="35.0" prefWidth="228.0" />
+            <TextField fx:id="LogName" prefHeight="59.0" prefWidth="231.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="LogPass" prefHeight="55.0" prefWidth="231.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </PasswordField>
          </children>
       </VBox>
-      <Button fx:id="Submit" layoutX="303.0" layoutY="291.0" mnemonicParsing="false" onAction="#submitAction" text="Submit" />
-      <Label fx:id="information" layoutX="266.0" layoutY="70.0" prefHeight="16.0" prefWidth="289.0">
+      <Button fx:id="Submit" layoutX="180.0" layoutY="307.0" mnemonicParsing="false" onAction="#submitAction" text="Submit">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Label fx:id="information" layoutX="9.0" layoutY="70.0" prefHeight="43.0" prefWidth="546.0">
          <font>
             <Font size="35.0" />
          </font>
       </Label>
+      <Button fx:id="Cancle" layoutX="342.0" layoutY="307.0" mnemonicParsing="false" onAction="#CencleAction" text="Cancle">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
