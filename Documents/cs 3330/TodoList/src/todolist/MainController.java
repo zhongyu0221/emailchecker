@@ -5,12 +5,17 @@
  */
 package todolist;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,12 +30,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.ItemList;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * FXML Controller class
@@ -38,8 +49,8 @@ import javafx.stage.Stage;
  * @author zhongyu
  */
 public class MainController implements Initializable {
-    
-     private Stage stage;
+
+    private Stage stage;
 
     @FXML
     private DatePicker DatePicker;
@@ -56,45 +67,54 @@ public class MainController implements Initializable {
     private ListView<LocalEvent> Tablelist;
     @FXML
     private Button Delete;
-    @FXML
-    private Button Edit;
-   
+
     @FXML
     private Menu MenuOpen;
     @FXML
     private MenuItem MenuAbout;
-    
-    
-    
-    LocalEvent localevent;
+
+    //LocalEventFirst localevent;
     @FXML
     private Menu MenuHelp;
+    @FXML
+    private MenuItem Json;
+    @FXML
+    private RadioButton Mark;
+    @FXML
+    private MenuItem Open;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        if (DatePicker == null) {
+        /*  if (DatePicker == null) {
             System.out.println("Date picker is null");
         } else {
             DatePicker.setValue(LocalDate.now());
-        }
-      //  localevent=new LocalEvent();
-        
+        }*/
+        //  localevent=new LocalEvent();
     }
 
     ObservableList<LocalEvent> list = FXCollections.observableArrayList();
 
+    JSONObject Entries = new JSONObject();
+
     @FXML
     private void saveEvent(ActionEvent event) {
 
-        if (list == null) {
+        if (list == null || NameText.getText() == null || DetailText.getText() == null || DatePicker.getValue() == null) {
             System.out.println("The list is null");
-        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please fill all the imformation!");
+            alert.showAndWait();
 
-            list.add(new LocalEvent(NameText.getText(), DetailText.getText(), DatePicker.getValue()) {});
+        } else {
+            list.add(new LocalEvent(NameText.getText(), DetailText.getText(), DatePicker.getValue()) {
+            });
+
             Tablelist.setItems(list);
 
         }
+
         refresh();
     }
 
@@ -119,70 +139,16 @@ public class MainController implements Initializable {
 
     }
 
-   @FXML
-    private void EditEvent(ActionEvent event) {
-       // NameText.setText(value);
-        
-    }
-    
-    
-    /*@FXML
-    public void handleSave(ActionEvent event) {
-        
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showSaveDialog(stage);
-        if (file != null) {
-            try
-            {
-               String jsonString =list .toJsonString();
-               PrintWriter out = new PrintWriter(file.getPath());
-               out.print(jsonString);
-               out.close();
-            }catch(IOException ioex)
-            {
-                String message = "Exception occurred while saving to " + file.getPath();
-                displayExceptionAlert(message, ioex);
-            } 
-        }        
-    }*/
-    
-    /*@FXML
-    public void handleSave(ActionEvent event) {
-          
-       LocalEvent p = new LocalEvent();
-        
-        p.setName(NameText.getText());
-        p.setDescription(DetailText.getText());
-        p.setDatetime(DatePicker.getValue());
-        
-     
-        
-        
-        
- 
-        if (NameText.getText() != null && DetailText.getText()!=null &&  DatePicker.getValue()!=null) {
-            p.setGender(genderComboBox.getValue().toString());
-        } else {
-            p.setGender(null);
-        }
-
-        return p;
-    }*/
-    
-    
-    
-    
-     @FXML
+    @FXML
     public void handleAbout(ActionEvent event) {
-        
+
         System.out.println("About method be called");
-        
-        
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("CS3300 Final Project");
         alert.setContentText("This application was developed by Zhongyu Li for CS3330 at the University of Missouri.");
-        
+
         TextArea textArea = new TextArea("This is a To-do List app ");
         textArea.setEditable(false);
         textArea.setWrapText(false);
@@ -193,43 +159,119 @@ public class MainController implements Initializable {
         expContent.setMaxWidth(Double.MAX_VALUE);
         expContent.add(textArea, 0, 0);
         alert.getDialogPane().setExpandableContent(expContent);
-        
+
         alert.showAndWait();
     }
-    
-    
-    
-    private void displayExceptionAlert(String message, Exception ex) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Exception Dialog");
-        alert.setHeaderText("Exception!");
-        alert.setContentText(message);
 
-        // Create expandable Exception.
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        ex.printStackTrace(pw);
-        String exceptionText = sw.toString();
+    @FXML
+    private void JsonEvent(ActionEvent event) throws IOException {
 
-        Label label = new Label("The exception stacktrace was:");
+        JSONArray Jlist = new JSONArray();
+        JSONObject jsonOBJ;
+        //  System.out.println("print list here" + list);
+        for (LocalEvent e : list) {
+            jsonOBJ = e.toJsonString();
+            Jlist.add(jsonOBJ);
+            //   System.out.println("print each jsonOBJ" + jsonOBJ);
+        }
 
-        TextArea textArea = new TextArea(exceptionText);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
+        FileWriter file = new FileWriter("test.json");
+        if (file != null) {
 
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        GridPane.setVgrow(textArea, Priority.ALWAYS);
-        GridPane.setHgrow(textArea, Priority.ALWAYS);
+            // System.out.println(jsonString);
+            file.write(Jlist.toJSONString());
+            file.flush();
+            file.close();
 
-        GridPane expContent = new GridPane();
-        expContent.setMaxWidth(Double.MAX_VALUE);
-        expContent.add(label, 0, 0);
-        expContent.add(textArea, 0, 1);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Json file Saved");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Failed to save");
+            alert.showAndWait();
+        }
 
-        // Set expandable Exception into the dialog pane.
-        alert.getDialogPane().setExpandableContent(expContent);
+    }
 
-        alert.showAndWait();
+    @FXML
+    private void MarkAction(ActionEvent event
+    ) {
+    }
+
+    @FXML
+    private void OpenJson(ActionEvent event
+    ) {
+
+    }
+
+    @FXML
+    private void OpenEvent(ActionEvent event) throws IOException, ParseException, Exception {
+
+        String jsonString = new String();
+
+        FileReader fileReader = new FileReader("test.json");
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        //System.out.println("Check open event here");
+
+        String inputLine;
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            jsonString += inputLine;
+        }
+        bufferedReader.close();
+
+        System.out.println("jsonString"+jsonString);
+
+        //GOOD HERE
+        JSONArray jlist;
+        try {
+            jlist = parseJsonArray(jsonString);
+            System.out.println("check parsed list" + jlist);
+        } catch (Exception ex) {
+            throw ex;
+        }
+        
+       // System.out.println("Successed parsed");
+        ObservableList<LocalEvent> list = FXCollections.observableArrayList();
+        //good here
+        for (Object e : jlist) {
+            try {
+                JSONObject jentryParsed = (JSONObject) e;
+                LocalEvent entry = new LocalEvent();
+                
+                entry.initFromJsonString(jentryParsed.toJSONString());
+                
+                System.out.println("entry" + entry);
+                //problem shows only name pass to entry
+                list.add(entry);
+
+            } catch (Exception ex) {
+                throw ex;
+            }
+
+        }
+        Tablelist.setItems(list);
+    }
+
+    public JSONArray parseJsonArray(String jsonString) throws Exception {
+        JSONArray jlist;
+        JSONParser parser = new JSONParser();
+        System.out.println("Check parse here");
+        System.out.println(jsonString);
+
+        try {
+            jlist = (JSONArray) parser.parse(jsonString);
+        } catch (Exception ex) {
+            throw ex;
+        }
+
+        System.out.println("parsed finished");
+
+        if (jlist == null) {
+            System.out.println("jlist is null");
+            return null;
+        } else {
+            return jlist;
+        }
     }
 }

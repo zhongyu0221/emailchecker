@@ -10,8 +10,6 @@ package todolist;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 /**
  *
  * @author zhongyu
@@ -25,20 +23,18 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
-public abstract class LocalEvent{
+public class LocalEvent {
 
     private String name = "";
     private String description = "";
-    private LocalDate datetime=null;
+    private String datetime = null;
+    // private Boolean status = false;
 
     LocalEvent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
-
-   
-
-   
 
     public String getName() {
         return name;
@@ -56,70 +52,84 @@ public abstract class LocalEvent{
         this.description = description;
     }
 
-    public LocalDate getDatetime() {
+    public String getDatetime() {
         return datetime;
     }
 
     public void setDatetime(LocalDate datetime) {
-        this.datetime = datetime;
+        this.datetime = DateUtil.format(datetime);
     }
 
+    /*public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean Status) {
+        this.status = Status;
+    }*/
     @Override
     public String toString() {
-        return  this.getDatetime()+"  "+ this.getName()+ "  " + this.getDescription();
+        return this.getDatetime() + "  " + this.getName() + "  " + this.getDescription();
 
     }
 
-     public LocalEvent(String name, String description, LocalDate datetime) {
-       this.setName(name);
-       this.setDescription(description);
-       this.setDatetime(datetime);
+    public LocalEvent(String name, String description, LocalDate datetime) {
+        this.setName(name);
+        this.setDescription(description);
+        this.setDatetime(datetime);
+        //this.setStatus(Status);
     }
-     
-     
-      public String toJsonString() {
-        JSONObject obj=new JSONObject();
-        if (name != null) obj.put("firstName", name);
-        if (description != null)  obj.put("lastName", description);
-        if (datetime != null) obj.put("gender", datetime);
-       
-        return obj.toJSONString(); 
+
+    public JSONObject toJsonString() {
+        JSONObject obj = new JSONObject();
+        if (name != null) {
+            obj.put("Name", name);
+        }
+        if (description != null) {
+            obj.put("Description", description);
+        }
+        if (datetime != null) {
+            obj.put("Datetime", datetime);
+        }
+
+        return obj;
     }
+
+    /* public abstract void isMark();
+
+    public abstract void notMark();*/
     
-      
-      
-      
-       private void displayExceptionAlert(String message, Exception ex) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Exception Dialog");
-        alert.setHeaderText("Exception!");
-        alert.setContentText(message);
+    void initFromJsonString(String jsonString) {
+        name = "";
+        description = "";
+        datetime = "";
 
-        // Create expandable Exception.
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        ex.printStackTrace(pw);
-        String exceptionText = sw.toString();
+        if (jsonString == null || jsonString.equals("")) {
+            return;
+        }
+        System.out.println("before parse" + jsonString);
+        JSONObject jsonOBJ;
+        try {
+            jsonOBJ = (JSONObject) JSONValue.parse(jsonString);
 
-        Label label = new Label("The exception stacktrace was:");
+        } catch (Exception ex) {
+            return;
+        }
 
-        TextArea textArea = new TextArea(exceptionText);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
+        if (jsonOBJ == null) {
+            return;
+        }
+        //System.out.println("After parse" + jsonOBJ);
 
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        GridPane.setVgrow(textArea, Priority.ALWAYS);
-        GridPane.setHgrow(textArea, Priority.ALWAYS);
+        name = (String) jsonOBJ.getOrDefault("Name", "");
+        description = (String) jsonOBJ.getOrDefault("Description", "");
+        datetime = (String) jsonOBJ.getOrDefault("Datetime", "");
 
-        GridPane expContent = new GridPane();
-        expContent.setMaxWidth(Double.MAX_VALUE);
-        expContent.add(label, 0, 0);
-        expContent.add(textArea, 0, 1);
+        System.out.println("initFromJsonString After parse" + jsonOBJ);
+        System.out.println(name);
+         System.out.println(description);
+          System.out.println(datetime);
+        
 
-        // Set expandable Exception into the dialog pane.
-        alert.getDialogPane().setExpandableContent(expContent);
-
-        alert.showAndWait();
     }
 }

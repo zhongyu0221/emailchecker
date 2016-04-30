@@ -5,6 +5,7 @@
  */
 package todolist;
 
+import java.time.LocalDate;
 import org.json.simple.JSONObject;
 
 /**
@@ -15,14 +16,19 @@ public class LocalEventFirst extends LocalEvent {
 
     private Boolean taskstatus = false;
 
-    public void isDone() {
+    public LocalEventFirst(String name, String description, LocalDate datetime,Boolean status) {
+       //super(name, description, datetime, true);
+    }
+
+    public void isMark() {
         taskstatus = true;
 
     }
 
-    public void notDone() {
+    public void notMark() {
 
         taskstatus = false;
     }
 
+   
 }
