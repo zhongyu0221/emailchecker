@@ -12,6 +12,9 @@
       <Label layoutX="51.0" layoutY="83.0" text="Input Email here:" />
       <TextField fx:id="inputemail" layoutX="173.0" layoutY="78.0" />
       <Button fx:id="checkbtn" layoutX="63.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Check" />
-      <Text fx:id="resultarea" layoutX="89.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="result" wrappingWidth="173.21875" />
+      <Text fx:id="addressarea" layoutX="203.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="add" wrappingWidth="173.21875" />
+      <Label layoutX="46.0" layoutY="237.0" text="The email address:" />
+      <Label layoutX="63.0" layoutY="288.0" text="Verify result:" />
+      <Text fx:id="resultarea" layoutX="203.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="result" wrappingWidth="173.21875" />
     </children>
 </AnchorPane>
