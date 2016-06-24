@@ -7,14 +7,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="453.0" prefWidth="499.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="emailchecker.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="620.0" prefWidth="653.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="emailchecker.FXMLDocumentController">
     <children>
-      <Label layoutX="51.0" layoutY="83.0" text="Input Email here:" />
-      <TextField fx:id="inputemail" layoutX="173.0" layoutY="78.0" />
-      <Button fx:id="checkbtn" layoutX="63.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Check" />
+      <Label layoutX="23.0" layoutY="52.0" text="Source Directory" />
+      <TextField fx:id="inputemail" layoutX="166.0" layoutY="47.0" onAction="#openfile" />
+      <Button fx:id="checkbtn" layoutX="35.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Check" />
       <Text fx:id="addressarea" layoutX="203.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="add" wrappingWidth="173.21875" />
       <Label layoutX="46.0" layoutY="237.0" text="The email address:" />
       <Label layoutX="63.0" layoutY="288.0" text="Verify result:" />
       <Text fx:id="resultarea" layoutX="203.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="result" wrappingWidth="173.21875" />
+      <Label layoutX="14.0" layoutY="90.0" text="Destination Directory" />
+      <TextField fx:id="outputresult" layoutX="166.0" layoutY="85.0" />
+      <Button fx:id="inputbtn" layoutX="393.0" layoutY="47.0" mnemonicParsing="false" onAction="#openfile" text="Select" />
+      <Button fx:id="outputbtn" layoutX="393.0" layoutY="85.0" mnemonicParsing="false" text="Select" />
+      <TextArea fx:id="details" layoutX="35.0" layoutY="364.0" prefHeight="200.0" prefWidth="564.0" />
     </children>
 </AnchorPane>
